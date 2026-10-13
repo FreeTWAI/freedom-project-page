@@ -5,7 +5,7 @@
 
 從公開 manifest 產生可分享的專案介紹頁。 已有固定欄位投影、HTML escaping、安全連結及可重現 dist/index.html 產出。
 
-先看[本倉 Issues](https://github.com/FreeTWAI-AI/freedom-project-page/issues)與[現有 PR](https://github.com/FreeTWAI-AI/freedom-project-page/pulls)。提出問題、這一輪範圍、完成條件與可投入時間，在 Issue 認領並協調重疊工作；維護者已直接派工時不必重複等待，將約定連回交接即可。使用自己的 fork／分支，PR 送到 **FreeTWAI-AI/freedom-project-page:main**。
+先看[本倉 Issues](https://github.com/FreeTWAI/freedom-project-page/issues)與[現有 PR](https://github.com/FreeTWAI/freedom-project-page/pulls)。提出問題、這一輪範圍、完成條件與可投入時間，在 Issue 認領並協調重疊工作；維護者已直接派工時不必重複等待，將約定連回交接即可。使用自己的 fork／分支，PR 送到 **FreeTWAI/freedom-project-page:main**。
 
 交給 Agent 前先讓它讀 [AGENTS.md](AGENTS.md)。PR 寫明變更用途、使用者可見結果、驗證命令、限制與原 Issue；附上可公開的合成案例或重現方式。Issue／PR 是程式協作的記錄，平台名片與公會身分不取代 repo 維護者的審查。
 
