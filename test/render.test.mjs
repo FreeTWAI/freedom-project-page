@@ -4,6 +4,22 @@ import { projectPublicView, renderProjectPage, publicHttpsUrl } from '../src/ind
 
 const manifest = { schema_version: 'freedom.project/v1', kind: 'Project', project_id: 'project:example', name: 'Example project', summary: 'A source-only example.', repository: { visibility: 'public', full_name: 'example/project', html_url: 'https://github.com/example/project', repository_id: '42', source_lineage: [] }, data_boundary: { classification: 'public', customer_data_mode: 'none' }, description: { problem: 'Make a useful example.', audiences: ['Makers'], capabilities: ['Build a source page'], limitations: ['No official status verification'] }, page: { publication: 'github_pages', canonical_platform_url: 'https://staging.freetwai.com/' }, ownership: { accountable_team: null, external_owner: { login: 'example' }, security_contact: 'https://github.com/example/project/security' }, licensing: { spdx_expression: 'NOASSERTION', source_distribution: 'source_available' }, release: { policy: 'freedom.no-release/v1' }, links: { documentation: 'https://github.com/example/project', demo: null, support: null, issues: null } };
 
+test('includes responsive layout CSS and structural grid for metadata cards', () => {
+  const html = renderProjectPage(manifest);
+  assert.match(html, /font-size:clamp\(2rem,5vw,3\.5rem\)/);
+  assert.match(html, /max-width:960px/);
+  assert.match(html, /grid-template-columns:repeat\(auto-fit,minmax\(min\(100%,300px\),1fr\)\)/);
+  assert.match(html, /<div class="grid" id="capabilities_and_limitations">/);
+});
+
+test('renders basic project details, problem statement and audiences correctly', () => {
+  const html = renderProjectPage(manifest);
+  assert.match(html, /<h1>Example project<\/h1>/);
+  assert.match(html, /<p>A source-only example\.<\/p>/);
+  assert.match(html, /<p>Make a useful example\.<\/p>/);
+  assert.match(html, /<li>Makers<\/li>/);
+});
+
 test('a public source artifact includes every required section and never trusts a requested label', () => {
   const source = { ...manifest, page: { ...manifest.page, requested_trust_label: 'official' } };
   const html = renderProjectPage(source);
