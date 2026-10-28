@@ -22,7 +22,7 @@ A deterministic, status-neutral introduction page generator for a **public** pro
 
 With Node 24, run `npm test` and `npm run build`. The input is `freedom.project.yaml` in JSON serialization (valid YAML). For another checked public manifest, use `node scripts/build.mjs /path/to/freedom.project.yaml`. Output is always this repository's `dist/index.html`; manifest fields cannot choose paths or shell commands. Set `SOURCE_COMMIT` to the exact 40-character source commit to include it in provenance.
 
-Run the pinned canonical schema and GitHub semantic checks before treating an artifact as a validated project page. The renderer performs its own bounded public projection and defensive field checks; these do not replace the full schema validator. It refuses private/internal metadata and `platform_only`/`withheld` page intents.
+Run the pinned canonical schema and GitHub semantic checks before treating an artifact as a validated project page. The renderer performs its own bounded public projection and defensive field checks; these do not replace the full schema validator. It refuses private/internal metadata and `platform_only`/`withheld` page intents. For details on validations, github actions and pinning rules, refer to [docs/workflows.md](docs/workflows.md).
 
 ## Integration boundary
 
