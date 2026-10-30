@@ -1,7 +1,21 @@
 import { createHash } from 'node:crypto';
 import { isIP } from 'node:net';
 
-const escapeHtml = (value) => String(value).replace(/[&<>"']/g, (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]);
+const escapeHtml = (value) => {
+  const str = String(value);
+  let res = '';
+  let lastIndex = 0;
+  for (let i = 0; i < str.length; i++) {
+    switch (str.charCodeAt(i)) {
+      case 38: res += str.substring(lastIndex, i) + '&amp;'; lastIndex = i + 1; break;
+      case 60: res += str.substring(lastIndex, i) + '&lt;'; lastIndex = i + 1; break;
+      case 62: res += str.substring(lastIndex, i) + '&gt;'; lastIndex = i + 1; break;
+      case 34: res += str.substring(lastIndex, i) + '&quot;'; lastIndex = i + 1; break;
+      case 39: res += str.substring(lastIndex, i) + '&#39;'; lastIndex = i + 1; break;
+    }
+  }
+  return lastIndex === 0 ? str : res + str.substring(lastIndex);
+};
 function text(value, label, limit = 2000) {
   if (typeof value !== 'string' || !value.trim() || value.length > limit) throw new TypeError(`${label} must be a bounded non-empty string`);
   return value;
