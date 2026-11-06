@@ -16,13 +16,39 @@ build 不會啟用 GitHub Pages、發布網站、簽署版本或證明 official 
 只接受經檢查的公開 manifest，不讀會員 token、資料庫或私人 metadata。中央契約才定義 manifest；renderer 不能自行發明 trust／official 欄位。 跨 repo 的協定由[中央平台](https://github.com/FreeTWAI/freedom-platform)維護。
 <!-- freedom-repository-guide:end -->
 
-A deterministic, status-neutral introduction page generator for a **public** project manifest. It produces `dist/index.html`; it does not enable GitHub Pages or publish a site.
+A deterministic, status-neutral introduction page generator for a **public** project manifest. This module is a vanilla Node.js static site generator that builds static HTML strings directly from a YAML manifest. It produces `dist/index.html`; it does not enable GitHub Pages, publish a site, or use React, web components, or frontend bundlers.
 
 ## Build
 
 With Node 24, run `npm test` and `npm run build`. The input is `freedom.project.yaml` in JSON serialization (valid YAML). For another checked public manifest, use `node scripts/build.mjs /path/to/freedom.project.yaml`. Output is always this repository's `dist/index.html`; manifest fields cannot choose paths or shell commands. Set `SOURCE_COMMIT` to the exact 40-character source commit to include it in provenance.
 
 Run the pinned canonical schema and GitHub semantic checks before treating an artifact as a validated project page. The renderer performs its own bounded public projection and defensive field checks; these do not replace the full schema validator. It refuses private/internal metadata and `platform_only`/`withheld` page intents. For details on validations, github actions and pinning rules, refer to [docs/workflows.md](docs/workflows.md).
+
+## API Reference
+
+The module exports two main functions for programmatic usage:
+
+- `projectPublicView(manifest)`: Accepts a manifest object. Validates the public metadata according to the strict schema and returns a sanitized view object containing the extracted properties intended for rendering. Throws a `TypeError` for invalid or non-public data.
+- `renderProjectPage(manifest, { manifestSha256, sourceCommit } = {})`: Accepts a manifest object and an optional options object. Validates and extracts public properties using `projectPublicView(manifest)` and returns the fully rendered HTML page as a string.
+  - `manifestSha256` (optional): The SHA-256 digest of the manifest.
+  - `sourceCommit` (optional): The 40-character SHA of the source commit for provenance tracking.
+
+## Developer Usage
+
+The library can be installed or linked and then imported directly. You can parse a JSON-serialized manifest (or parse it from YAML) and generate the HTML string as follows:
+
+```javascript
+import { renderProjectPage } from '@freetwai/freedom-project-page';
+import { readFile } from 'node:fs/promises';
+
+// Example: Parse from a JSON file
+const bytes = await readFile('freedom.project.json');
+const manifest = JSON.parse(bytes.toString('utf8'));
+
+// Render HTML
+const html = renderProjectPage(manifest);
+console.log(html);
+```
 
 ## Integration boundary
 
